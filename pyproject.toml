@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "easydb"
+version = "0.1.0"
+description = "A simple database abstraction layer"
+readme = "README.md"
+authors = [{ name = "Franklin Neves Filho", email = "your-email@example.com" }]
+license = { file = "LICENSE" }
+requires-python = ">=3.7"
+dependencies = [
+    'dnspython==2.7.0',
+    'greenlet==3.1.1',
+    'mysqlclient==2.2.7',
+    'pymongo==4.11.1',
+    'PyMySQL==1.1.1',
+    'SQLAlchemy==2.0.38',
+    'typing_extensions==4.12.2'
+]
+
+[project.urls]
+Homepage = "https://github.com/franklinnevesfilho/easydb"
+Repository = "https://github.com/franklinnevesfilho/easydb"
+Issues = "https://github.com/franklinnevesfilho/easydb/issues"
+
+[tool.setuptools]
+packages = ["easydb"]

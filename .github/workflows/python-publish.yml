@@ -5,7 +5,7 @@ on:
     types: [published]
 
 permissions:
-  contents: read
+  contents: write  # Ensure it has write permissions for commits
 
 jobs:
   release-build:
@@ -13,6 +13,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Ensures we have full history for bumping versions
 
       - uses: actions/setup-python@v5
         with:
@@ -23,16 +25,19 @@ jobs:
           python -m pip install --upgrade pip
           pip install build twine bumpversion
 
-      - name: Auto-increment version
-        run: |
-          bumpversion patch --allow-dirty
-
-      - name: Commit version bump
+      - name: Configure Git
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
+
+      - name: Auto-increment version
+        run: |
+          bumpversion patch --verbose || echo "Version bump failed"
+
+      - name: Commit version bump
+        run: |
           git commit -am "Bump version [CI skip]" || echo "No changes to commit"
-          git push || echo "No changes to push"
+          git push origin HEAD || echo "No changes to push"
 
       - name: Build release distributions
         run: |

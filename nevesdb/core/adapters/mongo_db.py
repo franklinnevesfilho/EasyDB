@@ -1,6 +1,6 @@
 from pymongo import MongoClient
 from bson import ObjectId
-from pydata.core import Adapter
+from nevesdb.core import Adapter
 from typing import Dict, Any
 
 

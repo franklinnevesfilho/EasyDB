@@ -1,4 +1,4 @@
-from pydata.core import Adapter
+from nevesdb.core import Adapter
 
 
 class MockAdapter(Adapter):

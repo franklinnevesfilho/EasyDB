@@ -14,7 +14,7 @@ PyData is a lightweight, easy-to-use asynchronous database ORM for Python. It si
 Ensure you have Python installed. Then, install `PyData` via pip:
 
 ```bash
-pip install pydata  # Replace with actual package name if different
+pip install nevesdb  # Replace with actual package name if different
 ```
 
 ## Usage
@@ -24,10 +24,10 @@ pip install pydata  # Replace with actual package name if different
 Create an instance of `PyData` and connect to your database:
 
 ```python
-from pydata import PyData
+from nevesdb import NevesDB
 
 # Initialize the database (MySQL example)
-db = PyData(db_type="mysql", db_user="root", db_password="password", db_name="test_db", db_url="localhost:3306")
+db = NevesDB(db_type="mysql", db_user="root", db_password="password", db_name="test_db", db_url="localhost:3306")
 ```
 
 ### 2. Define a Model
@@ -35,7 +35,7 @@ db = PyData(db_type="mysql", db_user="root", db_password="password", db_name="te
 Models define the structure of your database tables:
 
 ```python
-from pydata import Model
+from nevesdb import Model
 
 
 class User(Model):

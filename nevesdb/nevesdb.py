@@ -1,6 +1,6 @@
-from pydata.core.adapters import adapters
-from pydata.core.adapter import Adapter
-from pydata.core import logger
+from nevesdb.core.adapters import adapters
+from nevesdb.core.adapter import Adapter
+from nevesdb.core import logger
 
 _compatible_dbs = {
     "sqlite": "sqlite:///{db_url}/{db_name}.db",
@@ -23,7 +23,7 @@ def _get_db(db_type, db_user: str, db_password: str, db_name: str, db_url: str):
     return db_adapter
 
 
-class PyData:
+class NevesDB:
     def __init__(self, db_user:str, db_password, db_name:str, db_url: str, db_type: str):
         self.db_user = db_user
         self.db_password = db_password

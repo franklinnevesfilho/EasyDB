@@ -1,8 +1,8 @@
-from pydata import PyData, Model
+from nevesdb import NevesDB, Model
 import asyncio  # You'll need asyncio to run async functions
 
 # Initialize the database (SQL database in this case)
-db = PyData(db_type="mysql", db_user="root", db_password="password", db_name="test_db", db_url="localhost:3306")
+db = NevesDB(db_type="mysql", db_user="root", db_password="password", db_name="test_db", db_url="localhost:3306")
 
 
 # Define a model with default values

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "nevesdb"
-version = "0.1.2"
+version = "0.1.3"
 description = "A simple to use database abstraction layer"
 readme = "README.md"
 authors = [{ name = "Franklin Neves Filho", email = "franklin.neves.filho@gmail.com" }]

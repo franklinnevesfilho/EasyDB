@@ -1,7 +1,8 @@
 from sqlalchemy import create_engine, Column, Integer, String, Float, MetaData, Table, text
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
-from nevesdb.core import Adapter, logger
+from .adapter import Adapter
+from ..logger import logger
 
 Base = declarative_base()
 

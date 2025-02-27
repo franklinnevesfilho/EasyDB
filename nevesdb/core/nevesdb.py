@@ -1,6 +1,6 @@
-from nevesdb.core.adapters import adapters
-from nevesdb.core.adapter import Adapter
-from nevesdb.core import logger
+from .adapters import adapters
+from .adapters.adapter import Adapter
+from .logger import logger
 
 _compatible_dbs = {
     "sqlite": "sqlite:///{db_url}/{db_name}.db",

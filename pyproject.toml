@@ -21,9 +21,9 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/franklinnevesfilho/easydb"
-Repository = "https://github.com/franklinnevesfilho/easydb"
-Issues = "https://github.com/franklinnevesfilho/easydb/issues"
+Homepage = "https://github.com/franklinnevesfilho/NevesDB"
+Repository = "https://github.com/franklinnevesfilho/NevesDB"
+Issues = "https://github.com/franklinnevesfilho/NevesDB/issues"
 
 [tool.setuptools.packages.find]
 where = ["."]

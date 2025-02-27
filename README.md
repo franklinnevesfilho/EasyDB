@@ -1,6 +1,6 @@
-# PyData
+# NevesDB
 
-PyData is a lightweight, easy-to-use asynchronous database ORM for Python. It simplifies database interactions by providing an intuitive interface for defining models, adding data, and retrieving records.
+NevesDB is a lightweight, easy-to-use asynchronous database ORM for Python. It simplifies database interactions by providing an intuitive interface for defining models, adding data, and retrieving records.
 
 ## Features
 - Asynchronous support
@@ -11,7 +11,7 @@ PyData is a lightweight, easy-to-use asynchronous database ORM for Python. It si
 
 ## Installation
 
-Ensure you have Python installed. Then, install `PyData` via pip:
+Ensure you have Python installed. Then, install `NevesDB` via pip:
 
 ```bash
 pip install nevesdb  # Replace with actual package name if different
@@ -21,7 +21,7 @@ pip install nevesdb  # Replace with actual package name if different
 
 ### 1. Initialize the Database
 
-Create an instance of `PyData` and connect to your database:
+Create an instance of `NevesDB` and connect to your database:
 
 ```python
 from nevesdb import NevesDB

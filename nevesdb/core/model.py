@@ -1,11 +1,9 @@
 class Model:
     def __init_subclass__(cls):
         """Automatically extract attributes and types from class definition."""
-        cls._columns = {
-            key: type(value) for key, value in cls.__annotations__.items()
-        }
+        cls._columns = cls.__annotations__
         cls._defaults = {
-            key: value for key, value in cls.__dict__.items() if not key.startswith("__")
+            key: getattr(cls, key, None) for key in cls.__annotations__.keys()
         }
 
     def __init__(self, **kwargs):

@@ -3,7 +3,7 @@ requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "NevesDB"
+name = "nevesdb"
 version = "0.1.1"
 description = "A simple to use database abstraction layer"
 readme = "README.md"

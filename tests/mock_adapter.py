@@ -1,4 +1,4 @@
-from easydata.core import Adapter
+from pydb.core import Adapter
 
 
 class MockAdapter(Adapter):

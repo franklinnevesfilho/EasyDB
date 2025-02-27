@@ -14,7 +14,7 @@ EasyData is a lightweight, easy-to-use asynchronous database ORM for Python. It 
 Ensure you have Python installed. Then, install `EasyData` via pip:
 
 ```bash
-pip install easydata  # Replace with actual package name if different
+pip install pydb  # Replace with actual package name if different
 ```
 
 ## Usage
@@ -24,10 +24,10 @@ pip install easydata  # Replace with actual package name if different
 Create an instance of `EasyData` and connect to your database:
 
 ```python
-from easydata import EasyData
+from pydb import PyDb
 
 # Initialize the database (MySQL example)
-db = EasyData(db_type="mysql", db_user="root", db_password="password", db_name="test_db", db_url="localhost:3306")
+db = PyDb(db_type="mysql", db_user="root", db_password="password", db_name="test_db", db_url="localhost:3306")
 ```
 
 ### 2. Define a Model
@@ -35,7 +35,7 @@ db = EasyData(db_type="mysql", db_user="root", db_password="password", db_name="
 Models define the structure of your database tables:
 
 ```python
-from easydata import Model
+from pydb import Model
 
 
 class User(Model):

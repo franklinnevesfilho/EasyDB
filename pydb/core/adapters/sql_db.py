@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine, Column, Integer, String, Float, MetaData, Table, text
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
-from easydata.core import Adapter, logger
+from pydb.core import Adapter, logger
 
 Base = declarative_base()
 

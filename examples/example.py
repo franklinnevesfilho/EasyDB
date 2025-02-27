@@ -1,8 +1,8 @@
-from easydata import EasyData, Model
+from pydb import PyDb, Model
 import asyncio  # You'll need asyncio to run async functions
 
 # Initialize the database (SQL database in this case)
-db = EasyData(db_type="mysql", db_user="root", db_password="password", db_name="test_db", db_url="localhost:3306")
+db = PyDb(db_type="mysql", db_user="root", db_password="password", db_name="test_db", db_url="localhost:3306")
 
 
 # Define a model with default values

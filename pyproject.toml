@@ -27,3 +27,8 @@ Issues = "https://github.com/franklinnevesfilho/easydb/issues"
 
 [tool.setuptools]
 packages = ["nevesdb"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["nevesdb*"]  # Ensure all submodules are included
+exclude = ["tests*", "docs*"]  # Exclude non-package directories

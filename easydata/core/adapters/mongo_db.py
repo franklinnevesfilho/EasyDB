@@ -1,6 +1,6 @@
 from pymongo import MongoClient
 from bson import ObjectId
-from easydb.core import Adapter
+from easydata.core import Adapter
 from typing import Dict, Any
 
 

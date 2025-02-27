@@ -1,4 +1,4 @@
-from easydb.core import Adapter
+from easydata.core import Adapter
 
 
 class MockAdapter(Adapter):

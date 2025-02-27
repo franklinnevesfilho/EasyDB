@@ -1,6 +1,6 @@
-from easydb.core.adapters import adapters
-from easydb.core.adapter import Adapter
-from easydb.core import logger
+from easydata.core.adapters import adapters
+from easydata.core.adapter import Adapter
+from easydata.core import logger
 
 _compatible_dbs = {
     "sqlite": "sqlite:///{db_url}/{db_name}.db",
@@ -23,7 +23,7 @@ def _get_db(db_type, db_user: str, db_password: str, db_name: str, db_url: str):
     return db_adapter
 
 
-class EasyDB:
+class EasyData:
     def __init__(self, db_user:str, db_password, db_name:str, db_url: str, db_type: str):
         self.db_user = db_user
         self.db_password = db_password

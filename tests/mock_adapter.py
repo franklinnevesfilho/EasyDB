@@ -1,4 +1,4 @@
-from pydb.core import Adapter
+from pydata.core import Adapter
 
 
 class MockAdapter(Adapter):

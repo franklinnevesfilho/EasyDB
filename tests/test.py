@@ -1,7 +1,7 @@
 import unittest
 import asyncio
 from unittest.mock import AsyncMock, patch
-from pydb import PyDb, Model
+from pydata import PyData, Model
 
 
 class MockUser(Model):
@@ -20,12 +20,12 @@ class MockUser(Model):
             self.password = password
 
 
-class TestEasyData(unittest.TestCase):
+class TestPyData(unittest.TestCase):
     """Unit tests for EasyDB functionality."""
 
     def setUp(self):
         """Set up the EasyDB instance with a mock adapter."""
-        self.db = PyDb(db_type="mysql", db_user="root", db_password="password", db_name="test_db", db_url="localhost:3306")
+        self.db = PyData(db_type="mysql", db_user="root", db_password="password", db_name="test_db", db_url="localhost:3306")
         self.loop = asyncio.new_event_loop()
         asyncio.set_event_loop(self.loop)
 

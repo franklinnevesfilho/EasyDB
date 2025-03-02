@@ -89,12 +89,5 @@ async def main():
 asyncio.run(main())
 ```
 
-## License
-This project is licensed under the MIT License.
-
 ## Contributions
 Contributions are welcome! Feel free to open an issue or submit a pull request.
-
-## Contact
-For questions, reach out to the repository maintainers or create an issue.
-

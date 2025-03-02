@@ -1,36 +1,30 @@
+from typing import Dict, List, Optional, Type, TypeVar, Any
+
 from sqlalchemy import create_engine, Column, Integer, String, Float, MetaData, Table, text
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
+
 from .adapter import Adapter
 from ..logger import logger
 
 Base = declarative_base()
 
+T = TypeVar('T', bound='Base')
 
-def _build_where_clause(filters: dict):
-    """Build the WHERE clause for SQL queries."""
-    return " AND ".join([f"{key} = '{value}'" for key, value in filters.items()])
-
-
-def _build_set_clause(update_data: dict):
-    """Build the SET clause for SQL queries."""
-    return ", ".join([f"{key} = '{value}'" for key, value in update_data.items()])
-
-
-def _map_type(py_type):
+def _map_type(py_type: Type[int | str | float]) -> Any:
     """Map Python types to SQLAlchemy column types."""
-    if py_type == int:
-        return Integer
-    elif py_type == str:
-        # Default to VARCHAR(255) for string columns to avoid the MySQL error
-        return String(255)
-    elif py_type == float:
-        return Float
+    type_mapping = {
+        int: Integer,
+        str: String(255),
+        float: Float,
+    }
+    if py_type in type_mapping:
+        return type_mapping[py_type]
     else:
         message = f"Unsupported type: {py_type}"
         logger.error(message)
         raise ValueError(message)
-
 
 class SQLDatabase(Adapter):
 
@@ -38,56 +32,92 @@ class SQLDatabase(Adapter):
         """Initialize the SQL database connection."""
         self.engine = create_engine(db_url)
         self.metadata = MetaData()
-        self.SessionLocal = sessionmaker(bind=self.engine)
+        self.SessionLocal = sessionmaker(bind=self.engine, expire_on_commit=False)
 
-    def create_table(self, model_class: type):
+    def create_table(self, model_class: Type[T]):
         """Create the table based on the model class."""
         columns = []
 
         # Dynamically create columns based on the model class annotations
         for name, type_ in model_class.__annotations__.items():
-            if name == "id" and "id" not in model_class.__dict__:
-                # If 'id' is not defined, add it as the primary key
+            if name == "id":
                 columns.append(Column(name, Integer, primary_key=True))
             else:
-                # For other fields, map to SQLAlchemy types
                 columns.append(Column(name, _map_type(type_)))
 
-        # If 'id' wasn't added manually, we can safely add it as a primary key
         if "id" not in model_class.__annotations__ and "id" not in model_class.__dict__:
             columns.append(Column('id', Integer, primary_key=True))
 
-        # Create the SQLAlchemy table
         table = Table(model_class.__name__.lower(), self.metadata, *columns)
-        self.metadata.create_all(self.engine)  # Create the table in the DB
+        self.metadata.create_all(self.engine)
         logger.info(f"Table `{model_class.__name__.lower()}` created successfully.")
 
-    async def create(self, table: str, data: dict):
+    async def add(self, table: str, data: Dict[str, Any]):
         """Insert a record into the table."""
-        query = f"INSERT INTO {table} ({', '.join(data.keys())}) VALUES ({', '.join([':' + k for k in data.keys()])})"
-        with self.SessionLocal() as session:
-            session.execute(text(query), data)
-            session.commit()
+        query = text(f"INSERT INTO {table} ({', '.join(data.keys())}) VALUES ({', '.join([':' + k for k in data.keys()])})")
+        try:
+            with self.SessionLocal() as session:
+                session.execute(query, data)
+                session.commit()
+        except SQLAlchemyError as e:
+            logger.error(f"Error creating record in table {table}: {e}")
+            raise
 
-    async def get(self, table: str, filters: dict):
-        """Read records from the table based on filters."""
-        query = f"SELECT * FROM {table} WHERE {_build_where_clause(filters)}"
-        with self.SessionLocal() as session:
-            result = session.execute(text(query))
-            return result.fetchall()
+    async def get(self, table: str, filters: Optional[Dict[str, Any]] = None) -> List[Dict[str, Any]]:
+        """Read records from the table. If filters are provided, apply them; otherwise, return all records."""
+        # Build the base query
+        query = f"SELECT * FROM {table}"
 
-    async def update(self, table: str, filters: dict, update_data: dict):
+        # Add WHERE clause if filters are provided
+        if filters:
+            where_clause = " AND ".join([f"{key} = :{key}" for key in filters.keys()])
+            query += f" WHERE {where_clause}"
+
+        # Convert the query to a SQLAlchemy text object
+        query = text(query)
+
+        try:
+            with self.SessionLocal() as session:
+                # Execute the query with filters (if any)
+                result = session.execute(query, filters or {})
+                # Return all rows as a list of dictionaries
+                return [dict(row) for row in result.fetchall()]
+        except SQLAlchemyError as e:
+            logger.error(f"Error fetching records from table {table}: {e}")
+            raise
+
+    async def update(self, table: str, filters: Dict[str, Any], update_data: Dict[str, Any]):
         """Update records in the table."""
-        query = f"UPDATE {table} SET {_build_set_clause(update_data)} WHERE {_build_where_clause(filters)}"
-        with self.SessionLocal() as session:
-            session.execute(text(query))
-            session.commit()
+        set_clause = ", ".join([f"{key} = :{key}" for key in update_data.keys()])
+        where_clause = " AND ".join([f"{key} = :{key}" for key in filters.keys()])
+        query = text(f"UPDATE {table} SET {set_clause} WHERE {where_clause}")
+        try:
+            with self.SessionLocal() as session:
+                session.execute(query, {**update_data, **filters})
+                session.commit()
+        except SQLAlchemyError as e:
+            logger.error(f"Error updating records in table {table}: {e}")
+            raise
 
-    async def delete(self, table: str, filters: dict):
+    async def delete(self, table: str, filters: Dict[str, Any]):
         """Delete records from the table based on filters."""
-        query = f"DELETE FROM {table} WHERE {_build_where_clause(filters)}"
-        with self.SessionLocal() as session:
-            session.execute(text(query))
-            session.commit()
+        where_clause = " AND ".join([f"{key} = :{key}" for key in filters.keys()])
+        query = text(f"DELETE FROM {table} WHERE {where_clause}")
+        try:
+            with self.SessionLocal() as session:
+                session.execute(query, filters)
+                session.commit()
+        except SQLAlchemyError as e:
+            logger.error(f"Error deleting records from table {table}: {e}")
+            raise
 
-
+    async def execute(self, query: str):
+        """Execute a raw SQL query."""
+        try:
+            with self.SessionLocal() as session:
+                result = session.execute(text(query))
+                session.commit()
+                return result
+        except SQLAlchemyError as e:
+            logger.error(f"Error executing query: {e}")
+            raise

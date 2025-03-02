@@ -26,7 +26,7 @@ class MongoDatabase(Adapter):
         else:
             print(f"Collection `{collection_name}` already exists.")
 
-    async def create(self, collection: str, data: Dict[str, Any]):
+    async def add(self, collection: str, data: Dict[str, Any]):
         """Insert a record into the collection."""
         collection_obj = self.db[collection]
         result = collection_obj.insert_one(data)

@@ -6,11 +6,11 @@ class Adapter(ABC):
         pass
 
     @abstractmethod
-    async def create(self, table: str, data: dict):
+    async def add(self, table: str, data: dict):
         pass
 
     @abstractmethod
-    async def get(self, table: str, query: dict):
+    async def get(self, table: str, query: dict=None):
         pass
 
     @abstractmethod
@@ -19,4 +19,8 @@ class Adapter(ABC):
 
     @abstractmethod
     async def delete(self, table: str, query: dict):
+        pass
+
+    @abstractmethod
+    async def execute(self, query: str):
         pass

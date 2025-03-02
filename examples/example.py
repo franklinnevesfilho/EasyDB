@@ -7,9 +7,9 @@ db = NevesDB(db_type="mysql", db_user="root", db_password="password", db_name="t
 
 # Define a model with default values
 class User(Model):
-    id: int = 1
-    name: str = "John Doe"
-    password: str = "password"
+    id: int
+    name: str
+    password: str
 
 
 # Register the model (creates the table)

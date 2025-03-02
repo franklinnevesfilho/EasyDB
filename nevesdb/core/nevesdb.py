@@ -1,3 +1,5 @@
+from typing import Type
+
 from .adapters import adapters
 from .adapters.adapter import Adapter
 from .logger import logger
@@ -24,7 +26,7 @@ def _get_db(db_type, db_user: str, db_password: str, db_name: str, db_url: str):
 
 
 class NevesDB:
-    def __init__(self, db_user:str, db_password, db_name:str, db_url: str, db_type: str):
+    def __init__(self, db_user:str, db_password, db_name:str, db_url: str, db_type: Type[Adapter]):
         self.db_user = db_user
         self.db_password = db_password
         self.db_name = db_name
@@ -40,9 +42,9 @@ class NevesDB:
             logger.info(f"Model `{model.__name__}` is ready.")
         logger.info("All models are ready.")
 
-    async def add(self, instance):
+    async def add(self, model, instance):
         """add model instance to database"""
-        return await self.db.create(instance.__class__.__name__.lower(), instance.to_dict())
+        return await self.db.add(model.__name__.lower(), instance.to_dict())
 
     async def get(self, model, query: dict):
         """get model instance from database"""
@@ -55,6 +57,10 @@ class NevesDB:
     async def delete(self, model, query: dict):
         """delete model instance from database"""
         return await self.db.delete(model.__name__.lower(), query)
+
+    async def execute(self, query: str):
+        """execute raw query"""
+        return await self.db.execute(query)
 
 
 

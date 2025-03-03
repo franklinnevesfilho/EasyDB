@@ -27,7 +27,7 @@ Create an instance of `NevesDB` and connect to your database:
 from nevesdb import NevesDB
 
 # Initialize the database (MySQL example)
-db = NevesDB(db_type="mysql", db_user="root", db_password="password", db_name="test_db", db_url="localhost:3306")
+db = NevesDB(adapter="mysql", db_user="root", db_password="password", db_name="test_db", db_uri="localhost:3306")
 ```
 
 ### 2. Define a Model

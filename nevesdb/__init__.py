@@ -1,7 +1,10 @@
-from .core import *
+from .adapters import *
+from .model import Model
+from .nevesdb import NevesDB
 
 __all__ = [
-    "NevesDB",
-    "Adapter",
-    "Model",
+    NevesDB,
+    Model,
+    SQLAdapter,
+    MongoAdapter
 ]
